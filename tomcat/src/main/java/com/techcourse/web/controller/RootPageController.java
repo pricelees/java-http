@@ -35,4 +35,9 @@ public class RootPageController extends AbstractController {
 		response.setStatusCode(HttpStatusCode.OK);
 		response.setBody(resource.getContentType(), resource.getContent());
 	}
+
+	@Override
+	public void doPost(HttpRequest request, HttpResponse response) {
+		methodNotAllowed(response);
+	}
 }

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class AbstractControllerTest {
 
-	@DisplayName("GET / POST 요청이 아니면 BAD_REQUEST 상태코드를 반환한다.")
+	@DisplayName("GET / POST 요청이 아니면 405 상태코드를 반환한다.")
 	@Test
 	void service() throws Exception {
 		Controller controller = new AbstractController() {
@@ -28,6 +28,6 @@ class AbstractControllerTest {
 		assertThat(response)
 			.extracting("startLine")
 			.extracting("statusCode")
-			.isEqualTo(HttpStatusCode.BAD_REQUEST);
+			.isEqualTo(HttpStatusCode.METHOD_NOT_ALLOWED);
 	}
 }

@@ -23,15 +23,20 @@ class RootPageControllerTest {
 		assertThat(isSupport).isTrue();
 	}
 
-	@DisplayName("GET 이외의 요청은 처리하지 않는다.")
+	@DisplayName("POST 요청시 405를 반환한다.")
 	@Test
-	void isNotSupport() {
-		List<String> headers = List.of("Host: example.com", "Accept: text/html");
-		HttpRequest request = new HttpRequest("POST / HTTP/1.1", headers, null);
+	void doPost() throws Exception {
+		HttpRequest request = new HttpRequest("POST / HTTP/1.1", List.of(), null);
+		HttpResponse response = new HttpResponse();
 
 		Controller controller = RootPageController.getInstance();
 
-		assertThat(controller.isSupport(request)).isFalse();
+
+		controller.service(request, response);
+
+		assertThat(response).extracting("startLine")
+			.extracting("statusCode")
+			.isEqualTo(HttpStatusCode.METHOD_NOT_ALLOWED);
 	}
 
 	@DisplayName("GET / 요청을 처리한다.")

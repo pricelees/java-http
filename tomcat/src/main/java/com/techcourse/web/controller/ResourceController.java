@@ -28,10 +28,9 @@ public class ResourceController extends AbstractController {
 	@Override
 	public boolean isSupport(HttpRequest request) {
 		HttpRequestLine requestLine = request.getRequestLine();
-		HttpMethod method = requestLine.getMethod();
 		String requestPath = requestLine.getRequestPath();
 
-		return method == HttpMethod.GET && STATIC_FILE_PATTERN.matcher(requestPath).matches();
+		return STATIC_FILE_PATTERN.matcher(requestPath).matches();
 	}
 
 	@Override
@@ -41,5 +40,10 @@ public class ResourceController extends AbstractController {
 
 		response.setStatusCode(HttpStatusCode.OK);
 		response.setBody(resource.getContentType(), resource.getContent());
+	}
+
+	@Override
+	public void doPost(HttpRequest request, HttpResponse response) {
+		methodNotAllowed(response);
 	}
 }

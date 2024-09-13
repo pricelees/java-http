@@ -23,15 +23,20 @@ public class ResourceControllerTest {
 		assertThat(isSupport).isTrue();
 	}
 
-	@DisplayName("GET 이외의 요청은 처리하지 않는다.")
+	@DisplayName("POST 요청시 405를 반환한다.")
 	@Test
-	void isNotSupport() {
+	void doPost() throws Exception {
 		HttpRequest request = new HttpRequest("POST /css/test.css HTTP/1.1", List.of(), null);
+		HttpResponse response = new HttpResponse();
+
 		Controller controller = ResourceController.getInstance();
 
-		boolean isSupport = controller.isSupport(request);
 
-		assertThat(isSupport).isFalse();
+		controller.service(request, response);
+
+		assertThat(response).extracting("startLine")
+			.extracting("statusCode")
+			.isEqualTo(HttpStatusCode.METHOD_NOT_ALLOWED);
 	}
 
 	@DisplayName("정적 리소스에 대한 요청을 처리한다.")

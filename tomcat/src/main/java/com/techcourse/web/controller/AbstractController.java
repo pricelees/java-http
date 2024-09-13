@@ -23,7 +23,7 @@ public abstract class AbstractController implements Controller {
 			return;
 		}
 
-		badRequest(response);
+		methodNotAllowed(response);
 	}
 
 	public abstract boolean isSupport(HttpRequest request);
@@ -39,7 +39,7 @@ public abstract class AbstractController implements Controller {
 		response.addHeader(HttpHeader.LOCATION.getName(), location);
 	}
 
-	private void badRequest(HttpResponse response) {
-		response.setStatusCode(HttpStatusCode.BAD_REQUEST);
+	public void methodNotAllowed(HttpResponse response) {
+		response.setStatusCode(HttpStatusCode.METHOD_NOT_ALLOWED);
 	}
 }
