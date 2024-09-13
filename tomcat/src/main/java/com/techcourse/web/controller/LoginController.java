@@ -38,7 +38,7 @@ public class LoginController extends AbstractController {
 	@Override
 	public boolean isSupport(HttpRequest request) {
 		HttpRequestLine requestLine = request.getRequestLine();
-		return requestLine.getRequestPath().startsWith(LOGIN_PATH);
+		return LOGIN_PATH.equals(requestLine.getRequestPath());
 	}
 
 	@Override

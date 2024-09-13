@@ -36,7 +36,7 @@ public class RegisterController extends AbstractController {
 	@Override
 	public boolean isSupport(HttpRequest request) {
 		HttpRequestLine requestLine = request.getRequestLine();
-		return requestLine.getRequestPath().startsWith(REGISTER_PATH);
+		return REGISTER_PATH.equals(requestLine.getRequestPath());
 	}
 
 	@Override
