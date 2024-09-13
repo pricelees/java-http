@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.techcourse.db.InMemoryUserRepository;
+import com.techcourse.model.FormUrlEncodedBody;
 import com.techcourse.model.User;
 import com.techcourse.web.Resource;
 import com.techcourse.web.util.FormUrlEncodedParser;
@@ -54,10 +55,10 @@ public class LoginController extends AbstractController {
 
 	@Override
 	public void doPost(HttpRequest request, HttpResponse response) {
-		Map<String, String> body = FormUrlEncodedParser.parse(request.getRequestBody());
+		FormUrlEncodedBody body = FormUrlEncodedParser.parse(request.getRequestBody());
 		User user = findUser(body);
 
-		if (isUserNotExist(user, body.get("password"))) {
+		if (isUserNotExist(user, body.getValue("password"))) {
 			redirect(response, "/401.html");
 			return;
 		}
@@ -65,8 +66,8 @@ public class LoginController extends AbstractController {
 		completeLogin(response, user);
 	}
 
-	private User findUser(Map<String, String> body) {
-		String account = body.get("account");
+	private User findUser(FormUrlEncodedBody body) {
+		String account = body.getValue("account");
 
 		return InMemoryUserRepository.findByAccount(account).orElse(null);
 	}

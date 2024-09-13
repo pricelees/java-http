@@ -1,7 +1,6 @@
 package com.techcourse.web.controller;
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.apache.coyote.http11.http.HttpCookie;
 import org.apache.coyote.http11.http.HttpHeader;
@@ -14,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.techcourse.db.InMemoryUserRepository;
+import com.techcourse.model.FormUrlEncodedBody;
 import com.techcourse.model.User;
 import com.techcourse.web.Resource;
 import com.techcourse.web.util.FormUrlEncodedParser;
@@ -58,8 +58,8 @@ public class RegisterController extends AbstractController {
 	}
 
 	private static User register(HttpRequest request) {
-		Map<String, String> data = FormUrlEncodedParser.parse(request.getRequestBody());
-		User user = new User(data.get("account"), data.get("password"), data.get("email"));
+		FormUrlEncodedBody body = FormUrlEncodedParser.parse(request.getRequestBody());
+		User user = new User(body.getValue("account"), body.getValue("password"), body.getValue("email"));
 		InMemoryUserRepository.save(user);
 		return user;
 	}

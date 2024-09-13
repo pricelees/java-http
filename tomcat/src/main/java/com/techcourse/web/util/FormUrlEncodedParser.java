@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.techcourse.model.FormUrlEncodedBody;
+
 public class FormUrlEncodedParser {
 
 	private static final String PARAMETER_SEPARATOR = "&";
@@ -11,13 +13,15 @@ public class FormUrlEncodedParser {
 	private static final int KEY_INDEX = 0;
 	private static final int VALUE_INDEX = 1;
 
-	public static Map<String, String> parse(String body) {
+	public static FormUrlEncodedBody parse(String body) {
 		validateBodyIsNotEmpty(body);
 		String[] pairs = body.split(PARAMETER_SEPARATOR);
 
-		return Arrays.stream(pairs)
+		Map<String, String> result = Arrays.stream(pairs)
 			.map(pair -> pair.split(KEY_VALUE_SEPARATOR))
 			.collect(Collectors.toMap(FormUrlEncodedParser::getKey, FormUrlEncodedParser::getValue));
+
+		return new FormUrlEncodedBody(result);
 	}
 
 	private static void validateBodyIsNotEmpty(String body) {

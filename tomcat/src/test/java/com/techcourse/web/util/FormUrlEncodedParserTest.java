@@ -4,8 +4,11 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Map;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import com.techcourse.model.FormUrlEncodedBody;
 
 class FormUrlEncodedParserTest {
 
@@ -14,9 +17,10 @@ class FormUrlEncodedParserTest {
 	void parse() {
 		String body = "name=abc&password=1234";
 
-		Map<String, String> result = FormUrlEncodedParser.parse(body);
+		FormUrlEncodedBody result = FormUrlEncodedParser.parse(body);
 
-		assertThat(result).containsEntry("name", "abc").containsEntry("password", "1234");
+		assertThat(result.getValue("name")).isEqualTo("abc");
+		assertThat(result.getValue("password")).isEqualTo("1234");
 	}
 
 	@DisplayName("입력된 문자열이 없는 경우 예외를 던진다.")
@@ -34,8 +38,9 @@ class FormUrlEncodedParserTest {
 	void parse_WithEmptyValue() {
 		String body = "name=&password=1234";
 
-		Map<String, String> result = FormUrlEncodedParser.parse(body);
+		FormUrlEncodedBody result = FormUrlEncodedParser.parse(body);
 
-		assertThat(result).containsEntry("name", "").containsEntry("password", "1234");
+		assertThat(result.getValue("name")).isEqualTo("");
+		assertThat(result.getValue("password")).isEqualTo("1234");
 	}
 }
